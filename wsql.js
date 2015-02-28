@@ -1,8 +1,9 @@
+
 const LINK = 'a',
   TEXT = '*',
   IMAGE = 'img'
 
-function wsQuery(jqo, option, self) {
+function wsQuery($,jqo, option, self) {
   this.output = option;
   this.element = jqo;
   //ws.from('Kategori').
@@ -10,7 +11,7 @@ function wsQuery(jqo, option, self) {
     if (!jqo) {
       jqo = $('html');
     }
-    return new wsQuery(jqo, sel);
+    return new wsQuery($,jqo, sel);
   }
   this.from = function(text) {
     if (!jqo) {
@@ -25,7 +26,7 @@ function wsQuery(jqo, option, self) {
       el = jqo.find("*:contains(" + text + ")").eq(i);
     }
 
-    return new wsQuery(el, option, self);
+    return new wsQuery($,el, option, self);
   }
   this.fetch = function(attr) {
     var ret = [];
@@ -43,8 +44,8 @@ function wsQuery(jqo, option, self) {
       }
     })
 
-    return new wsQuery(objects, ret);
+    return new wsQuery($,objects, ret);
   }
 }
-var o = new wsQuery();
-o.select("h2").from("Keperluan Pribadi").fetch().output.join();
+module.exports =wsQuery;
+//web.select("h2").from("Keperluan Pribadi").fetch().output.join();
