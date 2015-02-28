@@ -1,0 +1,30 @@
+{
+  "name": "WSQL",
+  "version": "1.0.0",
+  "description": "WSQL ====",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lukluk/WSQL.git"
+  },
+  "keywords": [
+    "web",
+    "scraper",
+    "query"
+  ],
+  "author": "luklukaha@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lukluk/WSQL/issues"
+  },
+  "homepage": "https://github.com/lukluk/WSQL",
+  "dependencies": {
+    "cheerio": "^0.18.0",
+    "readline": "0.0.7",
+    "request": "^2.53.0",
+    "string": "^3.0.0"
+  }
+}
