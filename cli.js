@@ -16,7 +16,7 @@ var $ = null;
 
 rl.on('line', function (line) {
     line = line.trim();
-    if (line.indexOf("open ") > -1) {
+    if (line.indexOf("use ") > -1) {
         var ar = line.split(' ');
         var url = ar[1];
         connected = false;
