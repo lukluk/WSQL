@@ -1,4 +1,4 @@
 WSQL
 ====
 
-web scraper query language
+web scrapper query language
