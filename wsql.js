@@ -1,8 +1,4 @@
 
-const LINK = 'a',
-  TEXT = '*',
-  IMAGE = 'img'
-
 function wsQuery($,jqo, option, self) {
   this.output = option;
   this.element = jqo;
