@@ -1,0 +1,28 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'remove',
+1 verbose cli   'phantom' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.33
+4 verbose node_modules/phantom unbuild
+5 info preuninstall phantom@0.7.2
+6 info uninstall phantom@0.7.2
+7 verbose true,/Users/lukluk/WSQL/node_modules,/Users/lukluk/WSQL/node_modules unbuild phantom@0.7.2
+8 info postuninstall phantom@0.7.2
+9 error Error: EACCES, unlink '/Users/lukluk/WSQL/node_modules/phantom/node_modules/.bin/win-spawn'
+9 error  { [Error: EACCES, unlink '/Users/lukluk/WSQL/node_modules/phantom/node_modules/.bin/win-spawn']
+9 error   errno: 3,
+9 error   code: 'EACCES',
+9 error   path: '/Users/lukluk/WSQL/node_modules/phantom/node_modules/.bin/win-spawn' }
+10 error Please try running this command again as root/Administrator.
+11 error System Darwin 14.0.0
+12 error command "/usr/local/bin/node" "/usr/local/bin/npm" "remove" "phantom"
+13 error cwd /Users/lukluk/WSQL
+14 error node -v v0.10.33
+15 error npm -v 1.4.28
+16 error path /Users/lukluk/WSQL/node_modules/phantom/node_modules/.bin/win-spawn
+17 error code EACCES
+18 error errno 3
+19 error stack Error: EACCES, unlink '/Users/lukluk/WSQL/node_modules/phantom/node_modules/.bin/win-spawn'
+20 verbose exit [ 3, true ]

@@ -1,10 +1,29 @@
 var S = require('string');
-var attributes=[];
+
+var attributes = [];
+
+
 function wsQuery($, jqo, option, self) {
-    this.object = option;    
-    this.element = jqo;        
-    this.toJson=function(){
+    this.object = option;
+    this.output = false;
+    this.element = jqo;
+    this.open=function(){
+        
+    }
+    this.toJson = function () {
         console.log(JSON.stringify(this.object));
+    }
+    this.print = function (v) {
+        console.log(v);
+        return true;
+    }
+    this.res = {
+        send: function (v) {
+            this.output = v;
+        },
+        json: function (v) {
+            console.log(JSON.stringify(v));
+        }
     }
     this.getAttributes = function (sel) {
         if (!option) {
@@ -47,7 +66,7 @@ function wsQuery($, jqo, option, self) {
             o = o.join().trim();
         }
         o = this.getAttributes(o);
-        
+
         if ($(text).length > 0) {
             var el = $(text);
             var self = $(text);
@@ -105,12 +124,12 @@ function wsQuery($, jqo, option, self) {
             }
             for (var o in option) {
                 var opt = option[o];
-                var attribute = S(opt).between(':attr-').s;                
+                var attribute = S(opt).between(':attr-').s;
                 opt = S(opt).replaceAll(':attr-' + attribute, '').s;
                 var object = th.find(opt);
                 var ret = '';
                 if (self && object.text() != self.text()) {
-                    if (!attr && object) {                        
+                    if (!attr && object) {
                         if (attributes[o]) {
                             ret = object.attr(attributes[o]);
                         } else {

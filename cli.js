@@ -5,22 +5,25 @@ var readline = require('readline'),
     request = require('request'),
     vm = require('vm'),
     wsql = require('./wsql'),
+    phantom = require('./phantom'),
     fs = require('fs'),
     cheerio = require('cheerio'),
     util = require('util')
 rl = readline.createInterface(process.stdin, process.stdout);
 var connected = false;
 var $ = null;
+var global = false;
+var contex = false;
+
 var sandbox = {
     send: function (line, cb) {
-        var sandbox = {
-            web: new wsql($),
-            $: $
-        }
+
         try {
-            var vmResult = vm.runInNewContext(line, sandbox);
+
+            var vmResult = vm.runInContext(line, contex);
             cb && cb();
-            console.log(vmResult);
+            
+            contex.output && console.log(util.inspect(contex.output));
         } catch (e) {
             console.log(e);
         }
@@ -54,6 +57,31 @@ if (process.argv[2]) {
         if (line) {
             line = line.trim();
             console.log('>', line);
+            if (line.indexOf("use -b ") > -1) {
+                var ar = line.split(' ');
+                var url = ar[2];
+                connected = false;
+
+                var ps = new phantom();
+                ps.open(url, function (page) {
+
+                    page.evaluate(function () {
+                        return document.documentElement.outerHTML;
+                    }, function (result) {
+                        $ = cheerio.load(result);
+                        
+                        global = {
+                            web: new wsql($),
+                            page: page,
+                            $: $
+                        }
+                        contex = vm.createContext(global);
+                        connected = true;
+                        nextLine();
+                    });
+
+                });
+            } else
             if (line.indexOf("use -c ") > -1) {
                 var ar = line.split(' ');
                 var url = ar[2];
@@ -61,6 +89,11 @@ if (process.argv[2]) {
                 var data = fs.readFileSync('tmp/' + S(url).slugify().s);
                 connected = true;
                 $ = cheerio.load(data);
+                global = {
+                    web: new wsql($),
+                    $: $
+                }
+                contex = vm.createContext(global);
                 nextLine();
             } else
             if (line.indexOf("use ") > -1) {
@@ -75,6 +108,11 @@ if (process.argv[2]) {
                         $ = cheerio.load(body);
                         console.log('connected');
                         fs.writeFile('tmp/' + S(url).slugify().s, body);
+                        global = {
+                            web: new wsql($),
+                            $: $
+                        }
+                        contex = vm.createContext(global);
                         nextLine();
 
                     }
@@ -127,6 +165,39 @@ rl.on('line', function (line) {
         var data = fs.readFileSync('tmp/' + S(url).slugify().s);
         connected = true;
         $ = cheerio.load(data);
+        global = {
+            web: new wsql($),
+            $: $
+        }
+        contex = vm.createContext(global);
+
+    } else
+    if (line.indexOf("use -b ") > -1) {
+        var ar = line.split(' ');
+        var url = ar[2];
+        connected = false;
+
+        var ps = new phantom();
+        ps.open(url, function (page) {
+            page.evaluate(function () {
+                return document.documentElement.outerHTML;
+            }, function (result) {
+                $ = cheerio.load(result);
+                
+                global = {
+                    web: new wsql($),
+                    page: page,
+                    $: $
+                }
+                contex = vm.createContext(global);
+                connected = true;
+                rl.prompt();
+            });
+
+        });
+
+
+
 
     } else
     if (line.indexOf("use ") > -1) {
@@ -139,6 +210,11 @@ rl.on('line', function (line) {
                 connected = true;
                 console.log('connected');
                 $ = cheerio.load(body);
+                global = {
+                    web: new wsql($),
+                    $: $
+                }
+                contex = vm.createContext(global);
                 rl.prompt();
             }
         })
